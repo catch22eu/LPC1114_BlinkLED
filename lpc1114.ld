@@ -20,3 +20,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+MEMORY
+{
+    flash (rx)  : org = 0x00000000, len = 32k
+    ram   (xrw) : org = 0x10000000, len = 4k
+}
+  
+SECTIONS
+{
+        
+	. = ORIGIN(flash);
+        .text : 
+        {
+        	FILL(0xff)
+			KEEP (*(.isr_vector));
+/* note: https://stackoverflow.com/questions/28647688/address-of-interrupt-handler-in-interrupt-vector-is-1-of-actual-address */
+			KEEP (*(.after_vectors));
+			*(.text);
+        } >flash        
+        _etext = .;
+        
+	. = ORIGIN(ram);
+        .data : 
+        {
+	  		_data = .;
+	    	*(.data);
+	  		_edata = .;
+        } >ram AT>flash
+
+		.bss : 
+		{
+			__bss_start__ = .;
+			_bss = .;
+	    	*(.bss);
+	    	__bss_end__ = .;
+	    	_ebss = .;	  
+		} > ram
+
+	_vStackTop = 0x10000000 + 0x1000 -16;
+
+}

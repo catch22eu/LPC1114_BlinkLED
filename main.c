@@ -20,3 +20,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+
+#include "LPC11xx.h"
+
+#define GPIO1DATA		(*((volatile uint32_t *) 0x50013FFC ))
+#define GPIO1DIR		(*((volatile uint32_t *) 0x50018000 ))
+
+#define SYSAHBCLKCTRL	(*((volatile uint32_t *) 0x40048080 ))
+
+int main(void)
+{
+//	LPC_SYSCON->SYSAHBCLKCTRL |= (1<<6) | (1<<16);
+//	SYSAHBCLKCTRL |= (1<<6) + (1<<16);
+	
+	// set pin 5 of GPIO1 as output 
+	GPIO1DIR |= (1 << 5);
+	
+//	GPIO1DATA |= (1 << 5);
+	while(1)
+	{
+		// toggle bit 5 of GPIO1
+		GPIO1DATA ^= (1 << 5);
+		//wait loop
+		for (int i=0; i<1000000;i++); 
+	}
+}
+
