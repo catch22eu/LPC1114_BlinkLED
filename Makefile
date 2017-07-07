@@ -42,7 +42,7 @@ DEF			= -DCORE_M0 -DENABLE_UNTESTED_CODE
 #-DCHIP_LPC11CXX 
 
 SRC  		 = main.c
-SRC			+= $(LPCLIBS)Blinky/cr_startup_lpc11.c
+SRC			+= $(LPCLIBS)../Blinky/src/cr_startup_lpc11.c
 SRC			+= $(LPCLIBS)src/core_cm0.c
 SRC			+= $(LPCLIBS)src/system_LPC11xx.c
 ## add following sources if needed. 
